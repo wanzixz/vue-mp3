@@ -1,0 +1,59 @@
+import storage from 'good-storage'
+
+const SEARCH_KEY = '__search__'
+const SEARCH_MAX_LEN = 15
+
+function insertArray(arr, val, compare, maxLen) {
+  const index = arr.findIndex(compare)
+  // 如果存在该数据 那么直接返回
+  if (index === 0) {
+    return
+  }
+  // 如果存在该数据前面 删掉一条数据
+  if (index > 0) {
+    arr.splice(index, 1)
+  }
+  // 向数组的最前插入一条数据
+  arr.unshift(val)
+  // 如果有设置最大数据并且数组的长度要大于设置的最大数那么数组删除数组最后的数据
+  if (maxLen && arr.length > maxLen) {
+    arr.pop()
+  }
+}
+
+// 删除
+function deleteFromArray(arr, compare) {
+  var index = arr.findIndex(compare)
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
+}
+
+export function saveSearch(query) {
+  let searches = storage.get(SEARCH_KEY, [])
+  insertArray(searches, query, (item) => {
+    return item === query
+  }, SEARCH_MAX_LEN)
+  storage.set(SEARCH_KEY, searches)
+  return searches
+}
+
+export function loadSearch() {
+  return storage.get(SEARCH_KEY, [])
+}
+
+// 删除搜索的单条记录
+export function deleteSearch(query) {
+  let searches = storage.get(SEARCH_KEY, [])
+  deleteFromArray(searches, (item) => {
+    return item.includes(query)
+  })
+  storage.set(SEARCH_KEY, searches)
+  return searches
+}
+
+// 清空搜索历史记录
+export function clearSearch() {
+  storage.remove(SEARCH_KEY)
+  return []
+}

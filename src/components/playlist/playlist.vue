@@ -9,9 +9,9 @@
             <span class="clear" @click.stop="confirmShow"><i class="icon-clear"></i></span>
           </h1>
         </div>
-        <scroll ref="listContent"  class="list-content" >
+        <scroll :refreshDelay="refreshDelay" ref="listContent"  class="list-content" >
           <transition-group ref="list" name="list" tag="ul">
-            <li class="item" v-for="(item, index) in sequenceList" :key="item.id" @click="selectItem(item, index)">
+            <li class="item" v-for="(item, index) in sequenceList" :key="item.name" @click="selectItem(item, index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{item.name}}</span>
               <span class="like">
@@ -50,7 +50,8 @@
     mixins: [playerMixin],
     data() {
       return {
-        showFlag: false
+        showFlag: false,
+        refreshDelay: 120
       }
     },
     computed: {

@@ -38,8 +38,7 @@
               <p ref="lyricLine"
                   class="text"
                   :class="{'current': currentLineNum ===index}"
-                  v-for="(line,index) in currentLyric.lines"
-                  :key="index"
+                  v-for="(line,index) in currentLyric.lines" :key="index"
                   >{{line.txt}}</p>
             </div>
           </div>
@@ -102,13 +101,12 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
 import ProgressBar from 'base/progress-bar/progress-bar'
 import ProgressCircle from 'base/progress-circle/progress-circle'
 import { playMode } from 'common/js/config'
-// import { shuffle } from 'common/js/util'
 import Lyric from 'lyric-parser'
 import Scroll from 'base/scroll/scroll'
 import PlayList from 'components/playlist/playlist'
@@ -255,6 +253,7 @@ export default {
     },
     ready() {
       this.songReady = true
+      this.savePlayHistory(this.currentSong)
     },
     error() {
       this.songReady = true
@@ -393,7 +392,10 @@ export default {
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN'
-    })
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
   watch: {
     currentSong(newSong, oldSong) {

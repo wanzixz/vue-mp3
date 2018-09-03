@@ -70,7 +70,8 @@ export const playerMixin = {
 export const searchMixin = {
   data() {
     return {
-      query: ''
+      query: '',
+      refreshDelay: 120
     }
   },
   computed: {
@@ -84,6 +85,9 @@ export const searchMixin = {
     },
     blurInput() {
       this.$refs.searchBox.blur()
+    },
+    addQuery(query) {
+      this.$refs.searchBox.setQuery(query)
     },
     saveSearch() {
       this.saveSearchHistory(this.query)

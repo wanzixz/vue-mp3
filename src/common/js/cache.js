@@ -6,6 +6,8 @@ const SEARCH_MAX_LEN = 15
 const PLAY_KEY = '__play__'
 const PLAY_MAX_LEN = 200
 
+const FAVORITE_KEY = '__favorite__'
+
 function insertArray(arr, val, compare, maxLen) {
   const index = arr.findIndex(compare)
   // 如果存在该数据 那么直接返回
@@ -74,4 +76,29 @@ export function savePlay(song) {
 // 加载历史歌曲
 export function loadPlay() {
   return storage.get(PLAY_KEY, [])
+}
+
+// 增加喜欢的
+export function savaFavorite(song) {
+  let songs = storage.get(FAVORITE_KEY, [])
+  insertArray(songs, song, (item) => {
+    return item.id === song.id
+  })
+  storage.set(FAVORITE_KEY, songs)
+  return songs
+}
+
+// 删除
+export function deleteFavorite(song) {
+  let songs = storage.get(FAVORITE_KEY, [])
+  deleteFromArray(songs, (item) => {
+    return item.id === song.id
+  })
+  storage.set(FAVORITE_KEY, songs)
+  return songs
+}
+
+// 加载
+export function loadFavorite() {
+  return storage.get(FAVORITE_KEY, [])
 }

@@ -7,6 +7,10 @@ import fastclick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
 import './common/stylus/index.styl'
 
+/* eslint-disable no-unused-vars */
+// import vconsole from 'vconsole'
+// console.log('test')
+
 // 防止vue加载失败 报错
 Vue.config.productionTip = false
 
